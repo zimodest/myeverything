@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.zimodest</groupId>
+  <artifactId>myeverything</artifactId>
+  <version>1.0.0</version>
+
+  <!--打包格式jar-->
+  <packaging>jar</packaging>
+
+  <!--项目名称-->
+  <name>myeverything</name>
+
+  <!--项目描述-->
+  <description>这是一个很不错的everything的Java版工具</description>
+
+  <!--开发者信息-->
+  <developers>
+    <developer>
+      <id>01</id>
+      <name>zimodest</name>
+      <email>zimodest@163.com</email>
+      <roles>
+        <role>Creator</role>
+        <role>Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <!-- FIXME change it to the project's website -->
+  <url>http://www.example.com</url>
+
+  <properties>
+    <encoding>UTF-8</encoding>
+    <java.version>1.8</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+  </properties>
+
+  <!--项目依赖-->
+  <dependencies>
+
+    <!--lombok依赖-->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.6</version>
+    </dependency>
+
+    <!--H2数据库以及驱动（JDBC API）-->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <version>1.4.197</version>
+    </dependency>
+
+    <!--数据库的连接池（目的：提高数据库的访问效率）-->
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>druid</artifactId>
+      <version>1.1.2</version>
+    </dependency>
+
+  </dependencies>
+
+  <!--配置构建的信息-->
+  <build>
+    <!--编译插件-->
+  <plugins>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-compiler-plugin</artifactId>
+      <version>3.6.1</version>
+    </plugin>
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <!--配置主类-->
+            <mainClass>com.github.everything.cmd.MyEverythingCmdApp</mainClass>
+
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+
+  </plugins>
+
+
+  </build>
+
+</project>
