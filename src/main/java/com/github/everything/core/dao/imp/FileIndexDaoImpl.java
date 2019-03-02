@@ -7,7 +7,6 @@ import com.github.everything.core.model.FileType;
 import com.github.everything.core.model.Thing;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -93,7 +92,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
 
             //TODO
             sqlBuild.append(" order by depth ")
-                    .append("asc")
+                    .append(condition.getOrderByArc() ? "asc": "desc")
                     .append(" limit ")
                     .append(condition.getLimit())
                     .append(" offset 0");

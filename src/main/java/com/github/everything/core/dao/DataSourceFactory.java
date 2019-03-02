@@ -49,6 +49,11 @@ public class DataSourceFactory {
                     // /获取当前工程路径
                     //创建本地文件存储数据
                     dataSource.setUrl("jdbc:h2:"+EveryThingPlusConfig.getInstance().getH2IndexPath());
+                    //Druid数据库连接池的可配置参数
+                    //第一种
+                    dataSource.setValidationQuery("select now()");
+                    //第二种
+//                    dataSource.setTestWhileIdle(false);
                 }
             }
         }

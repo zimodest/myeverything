@@ -12,6 +12,10 @@ public class MyEverythingCmdApp {
 
     private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) {
+
+        //解析参数
+        parseParams(args);
+
         welcome();
 
         EverythingPlusManager manager = EverythingPlusManager.getInstance();
@@ -23,6 +27,77 @@ public class MyEverythingCmdApp {
         interactive(manager);
 
 
+    }
+
+    private static void parseParams(String[] args) {
+        EveryThingPlusConfig config = EveryThingPlusConfig.getInstance();
+        /*
+                处理参数：
+                如果用户指定的参数不对，就不解析，使用默认值即可
+             */
+
+        for(String param : args) {
+            String maxReturnParam = "--maxReturn=";
+
+            if(param.startsWith(maxReturnParam)) {
+                //--maxReturn
+                int index = param.indexOf("=");
+                String maxReturnStr = param.substring(index+1);
+
+                try {
+                    int maxReturn = Integer.parseInt(maxReturnStr);
+                    config.setMaxReturn(maxReturn);
+                } catch (NumberFormatException e) {
+                    //格式不对，使用默认值
+                }
+//                if(index < param.length()-1){
+//                    String maxReturnStr = param.substring(index+1);
+//                    config.setMaxReturn(Integer.parseInt(maxReturnStr));
+//                }
+            }
+
+            String deptOrderByAscParam = "--deptOrderByAsc=";
+            if(param.startsWith(deptOrderByAscParam)) {
+                int index = param.indexOf("=");
+                if(index < param.length()-1) {
+                    String deptOrderByAscSr = param.substring(index + 1);
+                    config.setDeptOrderAsc(Boolean.parseBoolean(deptOrderByAscSr));
+                }
+            }
+
+            String includePathParam = "--includePath=";
+            if(param.startsWith(includePathParam)) {
+                //includePath=values
+                int index = param.indexOf("=");
+                if(index < param.length()-1) {
+                    String includePathStr = param.substring(index +1);
+                    String[] includePaths = includePathStr.split(";");
+
+                    if(includePaths.length > 0) {
+                        config.getIncludePath().clear();
+                    }
+                    for(String p : includePaths) {
+                        config.getIncludePath().add(p);
+                    }
+
+                }
+            }
+
+            String excludePathParam = "--excludePath=";
+            if(param.startsWith(excludePathParam)) {
+                int index = param.indexOf("=");
+                if(index < param.length()-1) {
+                    String excludePathStr = param.substring(index +1);
+                    String[] excludePaths = excludePathStr.split(";");
+
+                    config.getExcludePath().clear();
+                    for(String p : excludePaths) {
+                        config.getIncludePath().add(p);
+                    }
+
+                }
+            }
+        }
     }
 
 
@@ -143,9 +218,8 @@ public class MyEverythingCmdApp {
 
 
     private static void search(EverythingPlusManager manager, Condition condition){
-//        condition.setLimit(EveryThingPlusConfig.getInstance().getMaxReturn());
-//        condition.setOrderByArc(EveryThingPlusConfig.getInstance().getDeptOrderAsc());
-
+        condition.setLimit(EveryThingPlusConfig.getInstance().getMaxReturn());
+        condition.setOrderByArc(EveryThingPlusConfig.getInstance().getDeptOrderAsc());
         List<Thing> thingList = manager.search(condition);
 
         for(Thing thing : thingList) {

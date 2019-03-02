@@ -48,7 +48,7 @@ public class EverythingPlusManager {
     private void initComponent(){
         DataSource dataSource = DataSourceFactory.dataSource();
         //检查数据库
-        checkDatabase();
+        initOrResetDatabase();
         FileIndexDao fileIndexDao = new FileIndexDaoImpl(dataSource);
         this.fileScan = new FileScanImpl();
         this.fileSearch = new FileSearchImpl(fileIndexDao);
@@ -62,6 +62,10 @@ public class EverythingPlusManager {
     }
 
     private void checkDatabase() {
+        DataSourceFactory.initDataBase();
+    }
+
+    private void initOrResetDatabase(){
         DataSourceFactory.initDataBase();
     }
 
@@ -103,6 +107,7 @@ public class EverythingPlusManager {
 
 
     public void buildIndex(){
+        initOrResetDatabase();
         Set<String> directories = EveryThingPlusConfig.getInstance().getIncludePath();
 
         if(this.executorService == null){

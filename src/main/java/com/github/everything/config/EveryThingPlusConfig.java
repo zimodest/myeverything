@@ -43,14 +43,10 @@ public class EveryThingPlusConfig {
     private Boolean deptOrderAsc = true;
 
 
-
     /**
      * H2数据库文件路径
      */
     private String h2IndexPath = System.getProperty("user.dir") + File.separator + "myeverything";
-
-
-
     private Set<String> excludePath = new HashSet<>();
 
     private void initDefaultPathsConfig(){
