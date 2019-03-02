@@ -75,6 +75,28 @@
       <artifactId>maven-compiler-plugin</artifactId>
       <version>3.6.1</version>
     </plugin>
+
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-dependency-plugin</artifactId>
+      <version>3.1.1</version>
+      <executions>
+        <execution>
+          <id>copy</id>
+          <!--执行阶段-->
+          <phase>package</phase>
+          <goals>
+            <goal>copy-dependencies</goal>
+          </goals>
+          <configuration>
+            <!--执行目标：放到的位置-->
+            <outputDirectory>
+              ${project.build.directory}/lib
+            </outputDirectory>
+          </configuration>
+        </execution>
+      </executions>
+    </plugin>
     <plugin>
       <groupId>org.apache.maven.plugins</groupId>
       <artifactId>maven-jar-plugin</artifactId>
@@ -83,6 +105,10 @@
         <archive>
           <manifest>
             <!--配置主类-->
+            <!--添加主类-->
+            <addClasspath>true</addClasspath>
+            <!--添加主类的位置-->
+            <classpathPrefix>lib</classpathPrefix>
             <mainClass>com.github.everything.cmd.MyEverythingCmdApp</mainClass>
 
           </manifest>

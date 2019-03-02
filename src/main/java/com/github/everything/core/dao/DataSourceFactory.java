@@ -1,11 +1,11 @@
 package com.github.everything.core.dao;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.github.everything.config.EveryThingPlusConfig;
 
 import javax.sql.DataSource;
 import java.io.*;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -46,15 +46,18 @@ public class DataSourceFactory {
 
                     //JDBC 中关于H2  jdbc:h2://ip:port/databaseName  存储到服务器
                     //获取当前工程路径
-                    String workDir = System.getProperty("user.dir");   //获取当前工程路径
+                    // /获取当前工程路径
                     //创建本地文件存储数据
-                    dataSource.setUrl("jdbc:h2:"+workDir+ File.separator+"everything");
+                    dataSource.setUrl("jdbc:h2:"+EveryThingPlusConfig.getInstance().getH2IndexPath());
                 }
             }
         }
 
         return dataSource;
     }
+
+
+
 
     public static void initDataBase(){
         //1、获取数据源
@@ -67,7 +70,6 @@ public class DataSourceFactory {
             if (in == null){
                 throw new RuntimeException("Not read init database script please check it");
             }
-
             StringBuilder sqlBuilder = new StringBuilder();
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
                 String line = null;
@@ -87,29 +89,16 @@ public class DataSourceFactory {
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.execute();
-
             connection.close();
             statement.close();
 
 
         }catch (IOException e){
-
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-
-        //
-
-
-
     }
 
-
-
-    public static void main(String[] args) {
-//        DataSource dataSource = DataSourceFactory.dataSource();
-//        System.out.println(dataSource);
-        DataSourceFactory.initDataBase();
-    }
 }

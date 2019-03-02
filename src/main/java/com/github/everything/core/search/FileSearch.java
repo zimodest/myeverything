@@ -18,12 +18,4 @@ public interface FileSearch {
      */
     List<Thing> search(Condition condition);
 
-
-//    public static void main(String[] args) {
-//        FileSearch fileSearch = new FileSearchImpl(new FileIndexDaoImpl(
-//                DataSourceFactory.dataSource()
-//        ));
-//        List<Thing> list = fileSearch.search(new Condition());
-//        System.out.println(list);
-//    }
 }

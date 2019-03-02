@@ -1,18 +1,11 @@
-package com.github.everything.index.impl;
+package com.github.everything.core.index.impl;
 
 import com.github.everything.config.EveryThingPlusConfig;
-import com.github.everything.core.dao.DataSourceFactory;
-import com.github.everything.core.dao.imp.FileIndexDaoImpl;
 import com.github.everything.core.interceptor.FileInterceptor;
-import com.github.everything.core.interceptor.impl.FileIndexInterceptor;
-import com.github.everything.core.interceptor.impl.FilePrintInterceptor;
-import com.github.everything.core.model.Thing;
-import com.github.everything.index.FileScan;
+import com.github.everything.core.index.FileScan;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class FileScanImpl implements FileScan {
 
@@ -25,15 +18,10 @@ public class FileScanImpl implements FileScan {
     @Override
     public void index(String path) {
         File file = new File(path);
-
         if(file.isFile()){
             if(config.getExcludePath().contains(file.getParentFile())){
                 return;
             }
-//            else {
-////                fileList.add(file);
-//
-//            }
         } else {
             if (config.getExcludePath().contains(path)) {
                 return;

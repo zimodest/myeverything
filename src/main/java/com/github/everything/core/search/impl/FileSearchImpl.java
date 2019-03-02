@@ -14,12 +14,6 @@ import java.util.List;
  * 业务代码：
  */
 public class FileSearchImpl implements FileSearch {
-
-//    private final DataSource dataSource;
-//
-//    public FileSearchImpl(DataSource dataSource){
-//        this.dataSource = dataSource;
-//    }
     private final FileIndexDao fileIndexDao;
 
     public FileSearchImpl(FileIndexDao fileIndexDao) {
@@ -29,6 +23,9 @@ public class FileSearchImpl implements FileSearch {
     @Override
     public List<Thing> search(Condition condition) {
 
+        if(condition == null){
+            return new ArrayList<>();
+        }
         return this.fileIndexDao.search(condition);
     }
 }

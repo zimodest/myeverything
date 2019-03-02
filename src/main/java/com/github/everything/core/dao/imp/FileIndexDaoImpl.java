@@ -36,8 +36,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
             //获取数据库连接
             connection = dataSource.getConnection();
             //准备SQL语句
-            String sql = "insert into file_index" +
-                    "(name, path, depth, file_type) values (?,?,?,?)";
+            String sql = "insert into file_index(name, path, depth, file_type) values (?,?,?,?)";
             //准备命令
             statement = connection.prepareStatement(sql);
             //设置参数
@@ -49,7 +48,7 @@ public class FileIndexDaoImpl implements FileIndexDao {
             statement.execute();
 
         }catch (SQLException e){
-
+            e.printStackTrace();
         }finally {
             releaseResource(null,statement,connection);
         }
@@ -90,17 +89,18 @@ public class FileIndexDaoImpl implements FileIndexDao {
                 sqlBuild.append(" and file_type = '")
                         .append(condition.getFileType().toUpperCase()).append("'");
             }
-
-
             //limit order 必选
+
+            //TODO
             sqlBuild.append(" order by depth ")
-                    .append(condition.getOrderByArc() ? "asc": "desc")
+                    .append("asc")
                     .append(" limit ")
                     .append(condition.getLimit())
                     .append(" offset 0");
 
             System.out.println(sqlBuild);
 
+//            append(condition.getOrderByArc() ? "asc": "desc")
             //准备命令
             statement = connection.prepareStatement(sqlBuild.toString());
             resultSet = statement.executeQuery();
@@ -119,13 +119,37 @@ public class FileIndexDaoImpl implements FileIndexDao {
             }
 
         }catch (SQLException e){
-
+            e.printStackTrace();
         }finally {
             releaseResource(resultSet,statement,connection);
 
         }
 
         return things;
+    }
+
+    @Override
+    public void delete(Thing thing) {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            //获取数据库连接
+            connection = dataSource.getConnection();
+            //准备SQL语句
+            String sql = "delete from file_index where path like '"+thing.getPath() +"%'";
+            //准备命令
+            statement = connection.prepareStatement(sql);
+            //设置参数
+            statement.setString(1,thing.getPath());
+            statement.executeUpdate();
+
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            releaseResource(null,statement,connection);
+        }
+
     }
 
     //解决内部代码大量重复问题，重构
@@ -150,28 +174,6 @@ public class FileIndexDaoImpl implements FileIndexDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
-    }
-
-    public static void main(String[] args) {
-        FileIndexDao fileIndexDao = new FileIndexDaoImpl(DataSourceFactory.dataSource());
-        Thing thing = new Thing();
-        thing.setName("简历2.ppt");
-        thing.setPath("D://简历2.ppt");
-        thing.setDepth(3);
-        thing.setFileType(FileType.DOC);
-
-//        fileIndexDao.insert(thing);
-
-        Condition condition = new Condition();
-        condition.setName("简历");
-        condition.setLimit(1);
-        condition.setOrderByArc(true);
-        condition.setFileType("OTHER");
-        List<Thing> things = fileIndexDao.search(condition);
-//        List<Thing> things = fileIndexDao.search(new Condition());
-        for(Thing t : things){
-            System.out.println(t);
         }
     }
 
